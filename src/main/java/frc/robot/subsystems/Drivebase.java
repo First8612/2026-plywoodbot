@@ -105,4 +105,22 @@ public class Drivebase extends SubsystemBase {
     public void resetPose(Pose2d pose) {
         swerveDrive.resetOdometry(pose);
     }
+
+    public double aimAt(double x, double y) {
+        Pose2d currPose = this.getPose();
+
+        double dx = x - currPose.getX();
+        double dy = y - currPose.getY();
+
+        double angleRad = Math.atan2(dy, dx);   // handles all quadrants
+        double angleDeg = Math.toDegrees(angleRad);
+
+        if (angleDeg < 0) {
+            angleDeg += 360;
+        }
+
+        return angleDeg;
+    }
+    //X:4.625
+    //Y:4.035
 }

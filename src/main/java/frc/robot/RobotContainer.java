@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveRobotCentricCommand;
 import frc.robot.commands.DriveTankCommand;
+import frc.robot.commands.AimAtHub;
 import frc.robot.commands.AimTowardAprilTag;
 import frc.robot.commands.AprilTagSquareUp;
 import frc.robot.commands.DriveFieldCentricCommand;
@@ -35,6 +36,7 @@ public class RobotContainer {
   };
   private int driveModeIndex = 0;
   private Vision vision = new Vision(drivebase);
+  private AimAtHub aimCommand = new AimAtHub(drivebase);
 
   public RobotContainer() {
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -46,7 +48,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    controller.a().whileTrue(new HonkCommand());
+    controller.a().whileTrue(aimCommand);
 
     controller.y().whileTrue(new AimTowardAprilTag(drivebase, false));
 

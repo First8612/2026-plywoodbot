@@ -11,8 +11,8 @@ import frc.robot.subsystems.Drivebase;
 
 public class Vision {
     
-    private StructPublisher<Pose2d> posePublisher = NetworkTableInstance.getDefault().getStructTopic("Poses/Pose" , Pose2d.struct).publish();; 
-    private StructPublisher<Pose2d> poseMT1Publisher = NetworkTableInstance.getDefault().getStructTopic("Poses/Pose_WpiBlue" , Pose2d.struct).publish();; 
+    private StructPublisher<Pose2d> posePublisher = NetworkTableInstance.getDefault().getStructTopic("Poses/Pose" , Pose2d.struct).publish();
+    private StructPublisher<Pose2d> poseMT1Publisher = NetworkTableInstance.getDefault().getStructTopic("Poses/Pose_WpiBlue" , Pose2d.struct).publish();
     private StructPublisher<Pose2d> poseMT2Publisher = NetworkTableInstance.getDefault().getStructTopic("Poses/Pose_MT2_WpiBlue" , Pose2d.struct).publish();
     private SwerveDrivePoseEstimator poseEstimator;
     
@@ -35,4 +35,5 @@ public class Vision {
         poseMT1Publisher.set(poseEstimate.pose);
         poseMT2Publisher.set(poseEstimateMT2.pose);
     }
+
 }
