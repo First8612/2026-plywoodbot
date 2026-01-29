@@ -22,6 +22,7 @@ import frc.robot.commands.DriveFieldCentricCommand;
 import frc.robot.commands.HonkCommand;
 import frc.robot.commands.MagicYeet;
 import frc.robot.subsystems.Drivebase;
+import frc.robot.subsystems.Vision;
 
 public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
@@ -33,6 +34,7 @@ public class RobotContainer {
     new DriveTankCommand(drivebase, controller)
   };
   private int driveModeIndex = 0;
+  private Vision vision = new Vision(drivebase);
 
   public RobotContainer() {
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -66,5 +68,9 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
+  }
+
+  public void robotPeriodic() {
+    vision.periodic();
   }
 }
