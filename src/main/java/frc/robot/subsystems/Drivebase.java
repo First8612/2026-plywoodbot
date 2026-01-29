@@ -8,6 +8,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -95,6 +96,10 @@ public class Drivebase extends SubsystemBase {
 
     public Pose2d getPose() {
         return swerveDrive.getPose();
+    }
+
+    public SwerveDrivePoseEstimator getPoseEstimator() {
+        return this.swerveDrive.swerveDrivePoseEstimator;
     }
 
     public void resetPose(Pose2d pose) {
