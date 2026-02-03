@@ -28,7 +28,7 @@ public class DriveFieldCentricCommand extends Command {
         0.1
       ) * Drivebase.kMaxSpeed;
       
-      var rotSpeed = driveController.getRightX() * Drivebase.kMaxAngularSpeed;
+      var rotSpeed = -1 * driveController.getRightX() * Drivebase.kMaxAngularSpeed;
       if(driveController.a().getAsBoolean()) {
         rotSpeed = drivebase.powFromAngle(drivebase.aimAt(4.625, 4.035));
       }
