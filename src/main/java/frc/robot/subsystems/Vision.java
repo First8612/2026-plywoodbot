@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -28,7 +30,11 @@ public class Vision {
         var poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
         LimelightHelpers.SetRobotOrientation("limelight", poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
         var poseEstimateMT2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
-        poseEstimator.addVisionMeasurement(poseEstimateMT2.pose, poseEstimateMT2.timestampSeconds);
+        if(poseEstimateMT2.tagCount != 0){
+            poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.5,.5,9999999));
+            poseEstimator.addVisionMeasurement(poseEstimateMT2.pose, poseEstimateMT2.timestampSeconds);
+        }
+        
 
 
         posePublisher.set(poseEstimator.getEstimatedPosition());

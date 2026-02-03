@@ -8,8 +8,10 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -21,6 +23,7 @@ import swervelib.parser.SwerveParser;
 public class Drivebase extends SubsystemBase {
     public static final double kMaxSpeed = 4.0; // 4 meters per second
     public static final double kMaxAngularSpeed = 1.5 * Math.PI; // 1.5 rotations per second
+    private PIDController rotatePid = new PIDController(0.02, 0, 0);
 
     private final SwerveDrive swerveDrive;
 
@@ -106,13 +109,18 @@ public class Drivebase extends SubsystemBase {
         swerveDrive.resetOdometry(pose);
     }
 
+    public void zeroPose() {
+        swerveDrive.zeroGyro();
+        swerveDrive.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
+    }
+
     public double aimAt(double x, double y) {
         Pose2d currPose = this.getPose();
 
         double dx = x - currPose.getX();
         double dy = y - currPose.getY();
 
-        double angleRad = Math.atan2(dy, dx);   // handles all quadrants
+        double angleRad = Math.atan2(dy, dx);
         double angleDeg = Math.toDegrees(angleRad);
 
         if (angleDeg < 0) {
@@ -120,6 +128,16 @@ public class Drivebase extends SubsystemBase {
         }
 
         return angleDeg;
+    }
+    public double powFromAngle(double angle) {
+        var drvRot = this.getPose().getRotation().getDegrees();
+        if(drvRot - angle < -180) {
+            angle -= 360;
+        }else if(drvRot - angle > 180) {
+            angle += 360;
+        }
+        var rot = rotatePid.calculate(drvRot - angle);
+        return rot;
     }
     //X:4.625
     //Y:4.035
