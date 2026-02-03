@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
@@ -23,7 +24,8 @@ import swervelib.parser.SwerveParser;
 public class Drivebase extends SubsystemBase {
     public static final double kMaxSpeed = 4.0; // 4 meters per second
     public static final double kMaxAngularSpeed = 1.5 * Math.PI; // 1.5 rotations per second
-    private PIDController rotatePid = new PIDController(0.02, 0, 0);
+    private PIDController rotatePid = new PIDController(0.0125, 0 /*if ki is not zero, tell ezra no */, 0.0009);
+    //private PIDController rotPid = new PIDController(0.01, 0.003, 0.00003);
 
     private final SwerveDrive swerveDrive;
 
@@ -130,6 +132,7 @@ public class Drivebase extends SubsystemBase {
         return angleDeg;
     }
     public double powFromAngle(double angle) {
+        SmartDashboard.putData("Rotate PID", rotatePid);
         var drvRot = this.getPose().getRotation().getDegrees();
         if(drvRot - angle < -180) {
             angle -= 360;
